@@ -154,7 +154,6 @@ au QuickfixCmdPost vimgrep cw
 set encoding=utf-8
 
 
-
 "
 " Global default options
 "

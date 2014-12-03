@@ -87,30 +87,6 @@ if 1 && (!exists('g:no_vimrc_example') || g:no_vimrc_example == 0)
   endif
 endif
 
-
-"---------------------------------------------------------------------------
-" GUI固有ではない画面表示の設定:
-"
-" 行番号を非表示 (number:表示)
-set nonumber
-" タブや改行を表示 (list:表示)
-set nolist
-" 長い行を折り返して表示 (nowrap:折り返さない)
-set wrap
-" 常にステータス行を表示 (詳細は:he laststatus)
-set laststatus=2
-" コマンドラインの高さ (Windows用gvim使用時はgvimrcを編集すること)
-set cmdheight=2
-" 画面を黒地に白にする (次行の先頭の " を削除すれば有効になる)
-"colorscheme evening " (Windows用gvim使用時はgvimrcを編集すること)
-
-"---------------------------------------------------------------------------
-" ファイル操作に関する設定:
-"
-" バックアップファイルを作成しない (次行の先頭の " を削除すれば有効になる)
-"set nobackup
-
-
 "---------------------------------------------------------------------------
 " ファイル名に大文字小文字の区別がないシステム用の設定:
 "   (例: DOS/Windows/MacOS)
@@ -166,7 +142,6 @@ if kaoriya#switch#enabled('disable-vimdoc-ja')
   let &rtp = join(filter(split(&rtp, ','), 'v:val !~ "vimdoc-ja"'), ',')
 endif
 
-" Copyright (C) 2009-2012 KaoriYa/MURAOKA Taro
 
 "---------------------------------------------------------------------------
 " Window設定
@@ -285,6 +260,12 @@ set backspace=indent,eol,start
 set wrapscan
 " テキスト挿入中の自動折り返しを日本語に対応させる
 set formatoptions+=mM
+" 長い行を折り返して表示 (nowrap:折り返さない)
+set wrap
+" 画面を黒地に白にする (次行の先頭の " を削除すれば有効になる)
+"colorscheme evening " (Windows用gvim使用時はgvimrcを編集すること)
+
+
 " 構文毎に文字色を変化させる
 syntax on
 """"""""""""""""""""""""""""""
@@ -331,6 +312,13 @@ if has('syntax')
     augroup END
     call ZenkakuSpace()
 endif
+""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""
+" キーマップ
+""""""""""""""""""""""""""""""
+" Tree表示
+noremap <C-J> :NERDTree<CR>
 """"""""""""""""""""""""""""""
 
 " filetypeの自動検出(最後の方に書いた方がいいらしい)
