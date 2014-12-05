@@ -197,6 +197,10 @@ NeoBundle 'tpope/vim-surround'
 NeoBundle 'vim-scripts/AnsiEsc.vim'
 " less用のsyntaxハイライト
 NeoBundle 'KohPoll/vim-less'
+" ちょっとしたコード片を書いて実行して確認
+NeoBundle 'thinca/vim-quickrun'
+" grepを便利にしてくれる
+NeoBundle 'grep.vim'
 
 " 余談: neocompleteは合わなかった。ctrl+pで補完するのが便利
 
