@@ -160,6 +160,20 @@ filetype off
 """"""""""""""""""""""""""""""
 " プラグインのセットアップ
 """"""""""""""""""""""""""""""
+" Grep設定
+set grepprg=$VIM/grep/cygwingrep/bin/grep\ -nH
+let mygrepprg = 'grep'
+au QuickfixCmdPost grep copen
+
+" QuickFixウィンドウでもプレビューや絞り込みを有効化
+let QFixWin_EnableMode = 1
+
+" QFixHowm/QFixGrepの結果表示にロケーションリストを使用する/しない
+let QFix_UseLocationList = 1
+
+
+" NeoBundle
+
 if has('vim_starting')
   set nocompatible               " Be iMproved
 
@@ -201,6 +215,8 @@ NeoBundle 'KohPoll/vim-less'
 NeoBundle 'thinca/vim-quickrun'
 " grepを便利にしてくれる
 NeoBundle 'grep.vim'
+" 対話式grep (外部グレップ用に改造）
+NeoBundle 'akira-hamada/friendly-grep.vim'
 
 " 余談: neocompleteは合わなかった。ctrl+pで補完するのが便利
 
@@ -323,6 +339,11 @@ endif
 """"""""""""""""""""""""""""""
 " Tree表示
 noremap <C-J> :NERDTree<CR>
+" ノーマルモード時だけ ; と : を入れ替える
+noremap ; :
+noremap : ;
+
+nnoremap <expr> <C-[> ':grep ' . expand('<cword>') . ' . -r --include=*.' . expand("%:e")
 """"""""""""""""""""""""""""""
 
 " filetypeの自動検出(最後の方に書いた方がいいらしい)
