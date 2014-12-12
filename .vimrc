@@ -284,7 +284,8 @@ set formatoptions+=mM
 set wrap
 " 画面を黒地に白にする (次行の先頭の " を削除すれば有効になる)
 "colorscheme evening " (Windows用gvim使用時はgvimrcを編集すること)
-
+" 行番号表示
+set number
 
 " 構文毎に文字色を変化させる
 syntax on
