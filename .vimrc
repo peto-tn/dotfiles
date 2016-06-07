@@ -1,235 +1,73 @@
-"---------------------------------------------------------------------------
-" サイトローカルな設定($VIM/vimrc_local.vim)があれば読み込む。読み込んだ後に
-" 変数g:vimrc_local_finishに非0な値が設定されていた場合には、それ以上の設定
-" ファイルの読込を中止する。
-if 1 && filereadable($VIM . '/vimrc_local.vim')
-  unlet! g:vimrc_local_finish
-  source $VIM/vimrc_local.vim
-  if exists('g:vimrc_local_finish') && g:vimrc_local_finish != 0
-    finish
-  endif
-endif
-
-"---------------------------------------------------------------------------
-" ユーザ優先設定($HOME/.vimrc_first.vim)があれば読み込む。読み込んだ後に変数
-" g:vimrc_first_finishに非0な値が設定されていた場合には、それ以上の設定ファ
-" イルの読込を中止する。
-if 1 && exists('$HOME') && filereadable($HOME . '/.vimrc_first.vim')
-  unlet! g:vimrc_first_finish
-  source $HOME/.vimrc_first.vim
-  if exists('g:vimrc_first_finish') && g:vimrc_first_finish != 0
-    finish
-  endif
-endif
-
-" plugins下のディレクトリをruntimepathへ追加する。
-for s:path in split(glob($VIM.'/plugins/*'), '\n')
-  if s:path !~# '\~$' && isdirectory(s:path)
-    let &runtimepath = &runtimepath.','.s:path
-  end
-endfor
-unlet s:path
-
-"---------------------------------------------------------------------------
-" 日本語対応のための設定:
-"
-" ファイルを読込む時にトライする文字エンコードの順序を確定する。漢字コード自
-" 動判別機能を利用する場合には別途iconv.dllが必要。iconv.dllについては
-" README_w32j.txtを参照。ユーティリティスクリプトを読み込むことで設定される。
-source $VIM/plugins/kaoriya/encode_japan.vim
-" メッセージを日本語にする (Windowsでは自動的に判断・設定されている)
-if !(has('win32') || has('mac')) && has('multi_lang')
-  if !exists('$LANG') || $LANG.'X' ==# 'X'
-    if !exists('$LC_CTYPE') || $LC_CTYPE.'X' ==# 'X'
-      language ctype ja_JP.eucJP
-    endif
-    if !exists('$LC_MESSAGES') || $LC_MESSAGES.'X' ==# 'X'
-      language messages ja_JP.eucJP
-    endif
-  endif
-endif
-" MacOS Xメニューの日本語化 (メニュー表示前に行なう必要がある)
-if has('mac')
-  set langmenu=japanese
-endif
-" 日本語入力用のkeymapの設定例 (コメントアウト)
-if has('keymap')
-  " ローマ字仮名のkeymap
-  "silent! set keymap=japanese
-  "set iminsert=0 imsearch=0
-endif
-" 非GUI日本語コンソールを使っている場合の設定
-if !has('gui_running') && &encoding != 'cp932' && &term == 'win32'
-  set termencoding=cp932
-endif
-
-"---------------------------------------------------------------------------
-" メニューファイルが存在しない場合は予め'guioptions'を調整しておく
-if 1 && !filereadable($VIMRUNTIME . '/menu.vim') && has('gui_running')
-  set guioptions+=M
-endif
-
-"---------------------------------------------------------------------------
-" Bram氏の提供する設定例をインクルード (別ファイル:vimrc_example.vim)。これ
-" 以前にg:no_vimrc_exampleに非0な値を設定しておけばインクルードはしない。
-if 1 && (!exists('g:no_vimrc_example') || g:no_vimrc_example == 0)
-  if &guioptions !~# "M"
-    " vimrc_example.vimを読み込む時はguioptionsにMフラグをつけて、syntax on
-    " やfiletype plugin onが引き起こすmenu.vimの読み込みを避ける。こうしない
-    " とencに対応するメニューファイルが読み込まれてしまい、これの後で読み込
-    " まれる.vimrcでencが設定された場合にその設定が反映されずメニューが文字
-    " 化けてしまう。
-    set guioptions+=M
-    source $VIMRUNTIME/vimrc_example.vim
-    set guioptions-=M
-  else
-    source $VIMRUNTIME/vimrc_example.vim
-  endif
-endif
-
-"---------------------------------------------------------------------------
-" ファイル名に大文字小文字の区別がないシステム用の設定:
-"   (例: DOS/Windows/MacOS)
-"
-if filereadable($VIM . '/vimrc') && filereadable($VIM . '/ViMrC')
-  " tagsファイルの重複防止
-  set tags=./tags,tags
-endif
-
-"---------------------------------------------------------------------------
-" コンソールでのカラー表示のための設定(暫定的にUNIX専用)
-if has('unix') && !has('gui_running')
-  let s:uname = system('uname')
-  if s:uname =~? "linux"
-    set term=builtin_linux
-  elseif s:uname =~? "freebsd"
-    set term=builtin_cons25
-  elseif s:uname =~? "Darwin"
-    set term=beos-ansi
-  else
-    set term=builtin_xterm
-  endif
-  unlet s:uname
-endif
-
-"---------------------------------------------------------------------------
-" コンソール版で環境変数$DISPLAYが設定されていると起動が遅くなる件へ対応
-if !has('gui_running') && has('xterm_clipboard')
-  set clipboard=exclude:cons\\\|linux\\\|cygwin\\\|rxvt\\\|screen
-endif
-
-"---------------------------------------------------------------------------
-" プラットホーム依存の特別な設定
-
-" WinではPATHに$VIMが含まれていないときにexeを見つけ出せないので修正
-if has('win32') && $PATH !~? '\(^\|;\)' . escape($VIM, '\\') . '\(;\|$\)'
-  let $PATH = $VIM . ';' . $PATH
-endif
-
-if has('mac')
-  " Macではデフォルトの'iskeyword'がcp932に対応しきれていないので修正
-  set iskeyword=@,48-57,_,128-167,224-235
-endif
-
-"---------------------------------------------------------------------------
-" KaoriYaでバンドルしているプラグインのための設定
-
-" autofmt: 日本語文章のフォーマット(折り返し)プラグイン.
-set formatexpr=autofmt#japanese#formatexpr()
-
-" vimdoc-ja: 日本語ヘルプを無効化する.
-if kaoriya#switch#enabled('disable-vimdoc-ja')
-  let &rtp = join(filter(split(&rtp, ','), 'v:val !~ "vimdoc-ja"'), ',')
-endif
-
-
-"---------------------------------------------------------------------------
-" Window設定
-au GUIEnter * simalt ~x
-
-"---------------------------------------------------------------------------
-"インストール: vi上で以下を実行
-"  :NeoBundleInstall
-"アンインストール: 該当のNeoBundleを消し、vi上で以下を実行
-"  :NeoBundleClean
-" 挙動を vi 互換ではなく、Vim のデフォルト設定にする
-set nocompatible
-" 一旦ファイルタイプ関連を無効化する
-filetype off
-
-""""""""""""""""""""""""""""""
-" プラグインのセットアップ
-""""""""""""""""""""""""""""""
-" Grep設定
-set grepprg=$VIM/grep/cygwingrep/bin/grep\ -nH
-let mygrepprg = 'grep'
-au QuickfixCmdPost grep copen
-
-" QuickFixウィンドウでもプレビューや絞り込みを有効化
-let QFixWin_EnableMode = 1
-
-" QFixHowm/QFixGrepの結果表示にロケーションリストを使用する/しない
-let QFix_UseLocationList = 1
-
-
 " NeoBundle
+" NeoBundle がインストールされていない時、
+" もしくは、プラグインの初期化に失敗した時の処理
+function! s:WithoutBundles()
+  colorscheme desert
+    " その他の処理
+endfunction
 
-if has('vim_starting')
-  set nocompatible               " Be iMproved
+" NeoBundle よるプラグインのロードと各プラグインの初期化
+function! s:LoadBundles()
+  " 読み込むプラグインの指定
+  NeoBundle 'Shougo/neobundle.vim'
+  NeoBundle 'tpope/vim-surround'
 
-  " Required:
-  set runtimepath+=$VIM/bundle/neobundle.vim/
-endif
+  " ファイルオープンを便利に
+  NeoBundle 'Shougo/unite.vim'
+  " Unite.vimで最近使ったファイルを表示できるようにする
+  NeoBundle 'Shougo/neomru.vim'
+  " ファイルをtree表示してくれる
+  NeoBundle 'scrooloose/nerdtree'
+  " Gitを便利に使う
+  NeoBundle 'tpope/vim-fugitive'
 
-" Required:
-call neobundle#begin(expand('$VIM/bundle/'))
+  " コメントON/OFFを手軽に実行
+  NeoBundle 'tomtom/tcomment_vim'
+  " シングルクオートとダブルクオートの入れ替え等
+  NeoBundle 'tpope/vim-surround'
 
-" Let NeoBundle manage NeoBundle
-" Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
+  " ログファイルを色づけしてくれる
+  NeoBundle 'vim-scripts/AnsiEsc.vim'
+  " less用のsyntaxハイライト
+  NeoBundle 'KohPoll/vim-less'
+  " ちょっとしたコード片を書いて実行して確認
+  NeoBundle 'thinca/vim-quickrun'
+  " grepを便利にしてくれる
+  NeoBundle 'grep.vim'
+  " agを使用
+  NeoBundle 'rking/ag.vim'
 
-" ファイルオープンを便利に
-NeoBundle 'Shougo/unite.vim'
-" Unite.vimで最近使ったファイルを表示できるようにする
-NeoBundle 'Shougo/neomru.vim'
-" ファイルをtree表示してくれる
-NeoBundle 'scrooloose/nerdtree'
-" Gitを便利に使う
-NeoBundle 'tpope/vim-fugitive'
-
-" Rails向けのコマンドを提供する
-NeoBundle 'tpope/vim-rails'
-" Ruby向けにendを自動挿入してくれる
-NeoBundle 'tpope/vim-endwise'
-
-" コメントON/OFFを手軽に実行
-NeoBundle 'tomtom/tcomment_vim'
-" シングルクオートとダブルクオートの入れ替え等
-NeoBundle 'tpope/vim-surround'
-
-" ログファイルを色づけしてくれる
-NeoBundle 'vim-scripts/AnsiEsc.vim'
-" less用のsyntaxハイライト
-NeoBundle 'KohPoll/vim-less'
-" ちょっとしたコード片を書いて実行して確認
-NeoBundle 'thinca/vim-quickrun'
-" grepを便利にしてくれる
-NeoBundle 'grep.vim'
-" 対話式grep (外部グレップ用に改造）
-NeoBundle 'akira-hamada/friendly-grep.vim'
 
 " 余談: neocompleteは合わなかった。ctrl+pで補完するのが便利
 
-call neobundle#end()
 
-" Required:
-filetype plugin indent on
+endfunction
 
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
-""""""""""""""""""""""""""""""
+" NeoBundle がインストールされているなら LoadBundles() を呼び出す
+" そうでないなら WithoutBundles() を呼び出す
+function! s:InitNeoBundle()
+  if isdirectory(expand("~/.vim/bundle/neobundle.vim/"))
+      filetype plugin indent off
+      if has('vim_starting')
+        set runtimepath+=~/.vim/bundle/neobundle.vim/
+    endif
+    try
+      call neobundle#begin(expand('~/.vim/bundle/'))
+      "call neobundle#rc(expand('~/.vim/bundle/'))
+        call s:LoadBundles()
+      call neobundle#end()
+    catch
+      call s:WithoutBundles()
+      endtry 
+    else
+    call s:WithoutBundles()
+  endif
 
+    filetype indent plugin on
+  syntax on
+  endfunction
+
+call s:InitNeoBundle()
 
 """"""""""""""""""""""""""""""
 " 各種オプションの設定
@@ -250,8 +88,6 @@ set title
 set wildmenu
 " 入力中のコマンドを表示する
 set showcmd
-" 検索時に大文字小文字を無視 (noignorecase:無視しない)
-set ignorecase
 " 大文字小文字の両方が含まれている場合は大文字小文字を区別
 set smartcase
 " 検索結果をハイライト表示する
@@ -273,7 +109,7 @@ set softtabstop=4
 " Vimが挿入するインデントの幅
 set shiftwidth=4
 " タブをスペースに展開しない (expandtab:展開する)
-set noexpandtab
+set expandtab
 " バックスペースでインデントや改行を削除できるようにする
 set backspace=indent,eol,start
 " 検索時にファイルの最後まで行ったら最初に戻る (nowrapscan:戻らない)
@@ -286,6 +122,8 @@ set wrap
 "colorscheme evening " (Windows用gvim使用時はgvimrcを編集すること)
 " 行番号表示
 set number
+" unファイルをオフ
+set noundofile
 
 " 構文毎に文字色を変化させる
 syntax on
@@ -315,6 +153,19 @@ au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vspli
 " ESCキーを2回押すと終了する
 au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
 au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
+" grep検索
+nnoremap <silent> ,g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
+" カーソル位置の単語をgrep検索
+nnoremap <silent> ,cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W>
+" grep検索結果の再呼出
+nnoremap <silent> ,r  :<C-u>UniteResume search-buffer<CR>
+
+" unite grep に ag(The Silver Searcher) を使う
+if executable('ag')
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+  let g:unite_source_grep_recursive_opt = ''
+endif
 """"""""""""""""""""""""""""""
 
 " http://inari.hatenablog.com/entry/2014/05/05/231307
@@ -344,8 +195,12 @@ noremap <C-J> :NERDTree<CR>
 noremap ; :
 noremap : ;
 
-nnoremap <expr> <C-[> ':grep ' . expand('<cword>') . ' . -r --include=*.' . expand("%:e")
 """"""""""""""""""""""""""""""
 
 " filetypeの自動検出(最後の方に書いた方がいいらしい)
 filetype on
+
+" cocos用辞書追加
+autocmd FileType cpp set dictionary=~/.vim/dict/cocos2d-js.dict
+autocmd FileType hpp set dictionary=~/.vim/dict/cocos2d-js.dict
+autocmd FileType h set dictionary=~/.vim/dict/cocos2d-js.dict
