@@ -10,7 +10,6 @@ endfunction
 function! s:LoadBundles()
   " 読み込むプラグインの指定
   NeoBundle 'Shougo/neobundle.vim'
-  NeoBundle 'tpope/vim-surround'
 
   " ファイルオープンを便利に
   NeoBundle 'Shougo/unite.vim'
@@ -36,6 +35,9 @@ function! s:LoadBundles()
   NeoBundle 'grep.vim'
   " agを使用
   NeoBundle 'rking/ag.vim'
+
+  " editorconfig
+  NeoBundle 'editorconfig/editorconfig-vim'
 
 
 " 余談: neocompleteは合わなかった。ctrl+pで補完するのが便利
@@ -190,7 +192,7 @@ endif
 " キーマップ
 """"""""""""""""""""""""""""""
 " Tree表示
-noremap <C-J> :NERDTree<CR>
+noremap <C-J> :NERDTreeFind<CR>
 " ノーマルモード時だけ ; と : を入れ替える
 noremap ; :
 noremap : ;
@@ -204,3 +206,12 @@ filetype on
 autocmd FileType cpp set dictionary=~/.vim/dict/cocos2d-js.dict
 autocmd FileType hpp set dictionary=~/.vim/dict/cocos2d-js.dict
 autocmd FileType h set dictionary=~/.vim/dict/cocos2d-js.dict
+
+" 一部ファイルタイプでインデント幅を変更する
+augroup fileTypeIndent
+    autocmd!
+    autocmd BufNewFile,BufRead *.json setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.rb setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.proto setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.cs setlocal noexpandtab tabstop=4 softtabstop=4 shiftwidth=4
+augroup END
