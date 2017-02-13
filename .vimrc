@@ -192,6 +192,7 @@ endif
 " キーマップ
 """"""""""""""""""""""""""""""
 " Tree表示
+noremap <C-K> :NERDTree<CR>
 noremap <C-J> :NERDTreeFind<CR>
 " ノーマルモード時だけ ; と : を入れ替える
 noremap ; :
