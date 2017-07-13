@@ -22,8 +22,6 @@ function! s:LoadBundles()
 
   " コメントON/OFFを手軽に実行
   NeoBundle 'tomtom/tcomment_vim'
-  " シングルクオートとダブルクオートの入れ替え等
-  NeoBundle 'tpope/vim-surround'
 
   " ログファイルを色づけしてくれる
   NeoBundle 'vim-scripts/AnsiEsc.vim'
@@ -145,7 +143,7 @@ noremap <C-N> :Unite -buffer-name=file file<CR>
 " 最近使ったファイルの一覧
 noremap <C-Z> :Unite file_mru<CR>
 " sourcesを「今開いているファイルのディレクトリ」とする
-noremap :uff :<C-u>UniteWithBufferDir file -buffer-name=file<CR>
+" noremap :uff :<C-u>UniteWithBufferDir file -buffer-name=file<CR>
 " ウィンドウを分割して開く
 au FileType unite nnoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
 au FileType unite inoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
