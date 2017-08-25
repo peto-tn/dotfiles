@@ -37,10 +37,8 @@ function! s:LoadBundles()
   " editorconfig
   NeoBundle 'editorconfig/editorconfig-vim'
 
-
-" 余談: neocompleteは合わなかった。ctrl+pで補完するのが便利
-
-
+  " 整形
+  NeoBundle 'h1mesuke/vim-alignta'
 endfunction
 
 " NeoBundle がインストールされているなら LoadBundles() を呼び出す
@@ -65,15 +63,15 @@ function! s:InitNeoBundle()
 
     filetype indent plugin on
   syntax on
-  endfunction
+endfunction
 
 call s:InitNeoBundle()
 
 """"""""""""""""""""""""""""""
 " 各種オプションの設定
 """"""""""""""""""""""""""""""
-"バックアップ設定
-set nobackup 
+" バックアップ設定
+set nobackup
 " スワップファイルは使わない
 set noswapfile
 " カーソルが何行目の何列目に置かれているかを表示する
