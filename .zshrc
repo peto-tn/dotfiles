@@ -87,3 +87,4 @@ source $ZSH/oh-my-zsh.sh
 alias gvim="/Applications/MacVim.app/Contents/MacOS/Vim -g --remote-tab-silent"
 alias gvim_n="/Applications/MacVim.app/Contents/MacOS/Vim -g"
 alias agrep="ag"
+alias ssh='~/sh/ssh-change-bg'
