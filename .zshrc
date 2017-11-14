@@ -85,4 +85,5 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 alias gvim="/Applications/MacVim.app/Contents/MacOS/Vim -g --remote-tab-silent"
+alias gvim_n="/Applications/MacVim.app/Contents/MacOS/Vim -g"
 alias agrep="ag"
