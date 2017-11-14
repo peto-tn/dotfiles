@@ -6,6 +6,9 @@ BGCOLOR_NORMAL=000000
 BGCOLOR_WARNING=101000
 BGCOLOR_CAUTION=200000
 
+TAB_BGCOLOR_WARNING=ffffb0
+TAB_BGCOLOR_CAUTION=ffb0b0
+
 REGEXP_CAUTION_HOST='prod'
 
 # Ctrl-C
@@ -17,16 +20,34 @@ function bg_color_change(){
   # echo -ne '\033]1337;SetColors=bg='$1'\a'
 }
 
+function tab_bg_color_change(){
+  local HEX_BG=$1
+  local BG_R=`echo $HEX_BG | sed 's/../0x&,/g' | awk -F "," '{printf("%d",$1)}'`
+  local BG_G=`echo $HEX_BG | sed 's/../0x&,/g' | awk -F "," '{printf("%d",$2)}'`
+  local BG_B=`echo $HEX_BG | sed 's/../0x&,/g' | awk -F "," '{printf("%d",$3)}'`
+
+  echo -e "\033]6;1;bg;red;brightness;$BG_R\a"
+  echo -e "\033]6;1;bg;green;brightness;$BG_G\a"
+  echo -e "\033]6;1;bg;blue;brightness;$BG_B\a"
+}
+
+function tab_bg_color_default(){
+  echo -e "\033]6;1;bg;*;default\a"
+}
+
 # Change BG Color back to normal (iTerm2)
 function bg_color_normal(){
   bg_color_change $BGCOLOR_NORMAL
+  tab_bg_color_default
 }
 
 # bgcolor change
 if egrep -q "$REGEXP_CAUTION_HOST" <(echo $*) 2>&1; then
   bg_color_change $BGCOLOR_CAUTION
+  tab_bg_color_change $TAB_BGCOLOR_CAUTION
 else
   bg_color_change $BGCOLOR_WARNING
+  tab_bg_color_change $TAB_BGCOLOR_WARNING
 fi
 
 # SSH Connect
