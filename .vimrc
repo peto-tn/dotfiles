@@ -11,8 +11,6 @@ function! s:LoadBundles()
   " 読み込むプラグインの指定
   NeoBundle 'Shougo/neobundle.vim'
 
-  " ファイルオープンを便利に
-  NeoBundle 'Shougo/unite.vim'
   " Unite.vimで最近使ったファイルを表示できるようにする
   NeoBundle 'Shougo/neomru.vim'
   " ファイルをtree表示してくれる
@@ -39,6 +37,9 @@ function! s:LoadBundles()
 
   " 整形
   NeoBundle 'h1mesuke/vim-alignta'
+
+  " セレクタ
+  NeoBundle 'ctrlpvim/ctrlp.vim'
 endfunction
 
 " NeoBundle がインストールされているなら LoadBundles() を呼び出す
@@ -212,3 +213,14 @@ augroup fileTypeIndent
     autocmd BufNewFile,BufRead *.proto setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd BufNewFile,BufRead *.cs setlocal noexpandtab tabstop=4 softtabstop=4 shiftwidth=4
 augroup END
+
+if has("gui_running")
+  set lines=100 columns=400
+  au GUIEnter * winpos 0 0
+endif
+
+" ctrlp
+let g:ctrlp_prompt_mappings = {
+  \ 'PrtBS()': ['<c-h>', '<bs>'],
+  \ 'PrtCurLeft()': ['<left>'],
+  \ }
