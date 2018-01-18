@@ -224,3 +224,10 @@ let g:ctrlp_prompt_mappings = {
   \ 'PrtBS()': ['<c-h>', '<bs>'],
   \ 'PrtCurLeft()': ['<left>'],
   \ }
+
+" ag入ってたらagで検索させる
+" ついでにキャッシュファイルからの検索もさせない
+if executable('Ag')
+ let g:ctrlp_use_caching = 0
+ let g:ctrlp_user_command = 'Ag %s -i --nocolor --nogroup -g ""'
+endif
