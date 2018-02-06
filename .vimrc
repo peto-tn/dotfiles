@@ -226,9 +226,18 @@ let g:ctrlp_prompt_mappings = {
   \ 'PrtCurLeft()': ['<left>'],
   \ }
 
+" ripgrep
+" ripgrepはmacなら以下のコマンド等でインストールしておく
+" > brew install ripgrep
+set runtimepath+=~/.vim/bundle/vim-ripgrep.vim/
+
+" ripgrep入ってたらRgで検索させる
 " ag入ってたらagで検索させる
 " ついでにキャッシュファイルからの検索もさせない
-if executable('Ag')
+if executable('Rg')
+ let g:ctrlp_use_caching = 0
+ let g:ctrlp_user_command = 'Rg %s --files --color=never --glob ""'
+elseif executable('Ag')
  let g:ctrlp_use_caching = 0
  let g:ctrlp_user_command = 'Ag %s -i --nocolor --nogroup -g ""'
 endif
