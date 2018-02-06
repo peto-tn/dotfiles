@@ -17,6 +17,7 @@ function! s:LoadBundles()
   NeoBundle 'scrooloose/nerdtree'
   " Gitを便利に使う
   NeoBundle 'tpope/vim-fugitive'
+  NeoBundle 'cohama/agit.vim'
 
   " コメントON/OFFを手軽に実行
   NeoBundle 'tomtom/tcomment_vim'
