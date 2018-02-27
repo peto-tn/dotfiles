@@ -231,6 +231,7 @@ let g:ctrlp_prompt_mappings = {
 " > brew install ripgrep
 set runtimepath+=~/.vim/bundle/vim-ripgrep.vim/
 
+" ctrlp
 " ripgrep入ってたらRgで検索させる
 " ag入ってたらagで検索させる
 " ついでにキャッシュファイルからの検索もさせない
@@ -241,3 +242,11 @@ elseif executable('Ag')
  let g:ctrlp_use_caching = 0
  let g:ctrlp_user_command = 'Ag %s -i --nocolor --nogroup -g ""'
 endif
+
+let g:ctrlp_lazy_update = 1
+
+" クラス/メソッド検索
+set runtimepath+=~/.vim/bundle/vim-ctrlp-tjump-master/
+nnoremap <c-[> :CtrlPtjump<cr>
+let g:ctrlp_tjump_only_silent = 1
+let g:ctrlp_tjump_skip_tag_name = 1
