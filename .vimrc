@@ -247,6 +247,6 @@ let g:ctrlp_lazy_update = 1
 
 " クラス/メソッド検索
 set runtimepath+=~/.vim/bundle/vim-ctrlp-tjump-master/
-nnoremap <c-[> :CtrlPtjump<cr>
+nnoremap <c-]> :CtrlPtjump<cr>
 let g:ctrlp_tjump_only_silent = 1
 let g:ctrlp_tjump_skip_tag_name = 1
