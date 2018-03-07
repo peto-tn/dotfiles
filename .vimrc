@@ -52,6 +52,9 @@ function! s:LoadBundles()
   " brew unlink python をして install.sh を実行してください
   " その後 brew link --overwrite python 等でリンクを戻してください
   NeoBundle 'nixprime/cpsm'
+
+  " ファイル内のfunction検索(ctrlp拡張)
+  NeoBundle 'tacahiroy/ctrlp-funky'
 endfunction
 
 " NeoBundle がインストールされているなら LoadBundles() を呼び出す
@@ -207,6 +210,11 @@ noremap <C-J> :NERDTreeFind<CR>
 noremap ; :
 noremap : ;
 
+let mapleader = ","
+
+" ,のデフォルトの機能は、\で使えるように退避
+noremap \  ,
+
 """"""""""""""""""""""""""""""
 
 " filetypeの自動検出(最後の方に書いた方がいいらしい)
@@ -256,6 +264,10 @@ endif
 
 " matcher に cpsm を使用
 let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
+
+" function検索用バインド
+nnoremap <Leader>fu :CtrlPFunky<Cr>
+nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
 
 " クラス/メソッド検索
 set runtimepath+=~/.vim/bundle/vim-ctrlp-tjump-master/
