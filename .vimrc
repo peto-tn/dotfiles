@@ -41,6 +41,17 @@ function! s:LoadBundles()
 
   " セレクタ
   NeoBundle 'ctrlpvim/ctrlp.vim'
+
+  " matcher (cpsm)
+  " Boostが必要
+  " > brew install boost
+  " その後 ~/.vim/bundle/cpsm/install.sh を実行
+  " 実行時に Fatal Python error: PyThreadState_Get: no current thread で
+  " クラッシュする場合は、pythonの不整合の可能性があります
+  " Homebrewを使ってpythonをinstallしている場合、一度
+  " brew unlink python をして install.sh を実行してください
+  " その後 brew link --overwrite python 等でリンクを戻してください
+  NeoBundle 'nixprime/cpsm'
 endfunction
 
 " NeoBundle がインストールされているなら LoadBundles() を呼び出す
@@ -243,7 +254,8 @@ elseif executable('Ag')
  let g:ctrlp_user_command = 'Ag %s -i --nocolor --nogroup -g ""'
 endif
 
-let g:ctrlp_lazy_update = 1
+" matcher に cpsm を使用
+let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
 
 " クラス/メソッド検索
 set runtimepath+=~/.vim/bundle/vim-ctrlp-tjump-master/
