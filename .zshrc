@@ -88,3 +88,15 @@ alias gvim="/Applications/MacVim.app/Contents/MacOS/Vim -g --remote-tab-silent"
 alias gvim_n="/Applications/MacVim.app/Contents/MacOS/Vim -g"
 alias agrep="ag"
 alias ssh='~/sh/ssh-change-bg'
+
+# ghq + peco
+function peco-src () {
+  local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
+  if [ -n "$selected_dir" ]; then
+    BUFFER="cd ${selected_dir}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+zle -N peco-src
+bindkey '^]' peco-src
