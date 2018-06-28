@@ -55,6 +55,10 @@ function! s:LoadBundles()
 
   " ファイル内のfunction検索(ctrlp拡張)
   NeoBundle 'tacahiroy/ctrlp-funky'
+
+  NeoBundle 'plasticboy/vim-markdown'
+  NeoBundle 'kannokanno/previm'
+  NeoBundle 'tyru/open-browser.vim'
 endfunction
 
 " NeoBundle がインストールされているなら LoadBundles() を呼び出す
@@ -221,9 +225,9 @@ noremap \  ,
 filetype on
 
 " cocos用辞書追加
-autocmd FileType cpp set dictionary=~/.vim/dict/cocos2d-js.dict
-autocmd FileType hpp set dictionary=~/.vim/dict/cocos2d-js.dict
-autocmd FileType h set dictionary=~/.vim/dict/cocos2d-js.dict
+" autocmd FileType cpp set dictionary=~/.vim/dict/cocos2d-js.dict
+" autocmd FileType hpp set dictionary=~/.vim/dict/cocos2d-js.dict
+" autocmd FileType h set dictionary=~/.vim/dict/cocos2d-js.dict
 
 " 一部ファイルタイプでインデント幅を変更する
 augroup fileTypeIndent
@@ -275,3 +279,26 @@ nnoremap <c-]> :CtrlPtjump<cr>
 let g:ctrlp_tjump_only_silent = 1
 let g:ctrlp_tjump_skip_tag_name = 1
 let g:ctrlp_match_window = 'results:30'
+
+" markdown
+au BufRead,BufNewFile *.md set filetype=markdown
+
+" tab
+" 現在のタブを右へ移動
+nnoremap <Tab>l :MyTabMoveRight<CR>
+" 現在のタブを左へ移動
+nnoremap <Tab>h :MyTabMoveLeft<CR>
+command! -count=1 MyTabMoveRight call MyTabMove(<count>)
+command! -count=1 MyTabMoveLeft  call MyTabMove(-<count>)
+function! MyTabMove(c)
+  let current = tabpagenr()
+  let max = tabpagenr('$')
+  let target = a:c >   1    ? current + a:c - line('.') :
+             \ a:c ==  1    ? current + 1 :
+             \ a:c == -1    ? current - 2 :
+             \ a:c <  -1    ? current + a:c + line('.') - 2 : 0
+  let target = target > max ? target % max - 1:
+             \ target < 0   ? target + max + 1:
+             \ target
+  execute ':tabmove ' . target
+endfunction
