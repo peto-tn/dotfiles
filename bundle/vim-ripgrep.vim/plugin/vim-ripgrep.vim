@@ -20,22 +20,50 @@ if !exists('g:rg_root_types')
   let g:rg_root_types = ['.git']
 endif
 
+if !exists('g:rg_window_location')
+  let g:rg_window_location = 'botright'
+endif
+
+fun! g:RgVisual() range
+  call s:RgGrepContext(function('s:RgSearch'), '"' . s:RgGetVisualSelection() . '"')
+endfun
+
 fun! s:Rg(txt)
   call s:RgGrepContext(function('s:RgSearch'), s:RgSearchTerm(a:txt))
 endfun
 
+fun! s:RgGetVisualSelection()
+    " Why is this not a built-in Vim script function?!
+    let [line_start, column_start] = getpos("'<")[1:2]
+    let [line_end, column_end] = getpos("'>")[1:2]
+    let lines = getline(line_start, line_end)
+    if len(lines) == 0
+        return ''
+    endif
+    let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+    let lines[0] = lines[0][column_start - 1:]
+    return join(lines, "\n")
+endfun
+
 fun! s:RgSearchTerm(txt)
   if empty(a:txt)
-    return expand("<cword>")
+    return expand("<cword>") . " **/*"
   else
-    return a:txt
+    return a:txt . " **/*"
   endif
 endfun
 
 fun! s:RgSearch(txt)
-  silent! exe 'grep! ' . a:txt
+  let l:rgopts = ' '
+  if &ignorecase == 1
+    let l:rgopts = l:rgopts . '-i '
+  endif
+  if &smartcase == 1
+    let l:rgopts = l:rgopts . '-S '
+  endif
+  silent! exe 'grep! ' . l:rgopts . a:txt
   if len(getqflist())
-    copen
+    exe g:rg_window_location 'copen'
     redraw!
     if exists('g:rg_highlight')
       call s:RgHighlight(a:txt)
@@ -54,8 +82,12 @@ fun! s:RgGrepContext(search, txt)
   let &grepformat = g:rg_format
   let l:te = &t_te
   let l:ti = &t_ti
+  let l:shellpipe_bak=&shellpipe
   set t_te=
   set t_ti=
+  if !has("win32")
+    let &shellpipe="&>"
+  endif
 
   if exists('g:rg_derive_root')
     call s:RgPathContext(a:search, a:txt)
@@ -63,6 +95,7 @@ fun! s:RgGrepContext(search, txt)
     call a:search(a:txt)
   endif
 
+  let &shellpipe=l:shellpipe_bak
   let &t_te=l:te
   let &t_ti=l:ti
   let &grepprg = l:grepprgb
