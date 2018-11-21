@@ -257,6 +257,8 @@ let g:ctrlp_prompt_mappings = {
 " > brew install ripgrep
 set runtimepath+=~/.vim/bundle/vim-ripgrep.vim/
 
+let g:rg_highlight=1
+
 " ctrlp
 " ripgrep入ってたらRgで検索させる
 " ag入ってたらagで検索させる

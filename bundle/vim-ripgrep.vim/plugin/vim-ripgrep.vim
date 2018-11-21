@@ -47,9 +47,9 @@ endfun
 
 fun! s:RgSearchTerm(txt)
   if empty(a:txt)
-    return expand("<cword>") . " **/*"
+    return expand("<cword>")
   else
-    return a:txt . " **/*"
+    return a:txt
   endif
 endfun
 
@@ -61,7 +61,7 @@ fun! s:RgSearch(txt)
   if &smartcase == 1
     let l:rgopts = l:rgopts . '-S '
   endif
-  silent! exe 'grep! ' . l:rgopts . a:txt
+  silent! exe 'grep! ' . l:rgopts . a:txt . " ."
   if len(getqflist())
     exe g:rg_window_location 'copen'
     redraw!
