@@ -100,3 +100,18 @@ function peco-src () {
 }
 zle -N peco-src
 bindkey '^]' peco-src
+
+# ------------------------------------------------------------------------
+# ディレクトリ移動
+# ------------------------------------------------------------------------
+# cd + peco
+function peco-cd () {
+  local selected_dir=$(find . -maxdepth 3 -type d | peco --query "$LBUFFER")
+  if [ -n "$selected_dir" ]; then
+    BUFFER="cd ${selected_dir}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+zle -N peco-cd
+bindkey 'pcd' peco-cd
