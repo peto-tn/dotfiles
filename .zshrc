@@ -17,6 +17,7 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 # theme
 zplug "themes/eastwood", from:oh-my-zsh, as:theme
 zplug "lib/completion", from:oh-my-zsh
+zplug "lib/termsupport", from:oh-my-zsh
 zplug "lib/theme-and-appearance", from:oh-my-zsh
 
 # history
