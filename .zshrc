@@ -1,94 +1,66 @@
-# Path to your oh-my-zsh installation.
-export ZSH=/Users/nakamura/.oh-my-zsh
-
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="eastwood"
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
-
 # User configuration
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+export PATH=$HOME/sh:$PATH
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-export PATH=$HOME/.nodebrew/current/bin:$PATH
-# export MANPATH="/usr/local/man:$MANPATH"
+# ------------------------------------------------------------------------
+# zplug
+# ------------------------------------------------------------------------
+# zplugがなければzplugをインストール後zshを再起動
+if [ ! -e "${HOME}/.zplug/init.zsh" ]; then
+  curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh| zsh
+fi
 
-source $ZSH/oh-my-zsh.sh
+# zplug
+source ${HOME}/.zplug/init.zsh
+zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+# theme
+zplug "themes/eastwood", from:oh-my-zsh, as:theme
+zplug "lib/completion", from:oh-my-zsh
+zplug "lib/theme-and-appearance", from:oh-my-zsh
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+# history
+zplug "lib/history", from:oh-my-zsh
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# syntax
+zplug "zsh-users/zsh-syntax-highlighting"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
+# suggest
+zplug "zsh-users/zsh-autosuggestions"
+bindkey '^e' forward-word
+bindkey '^t' autosuggest-toggle
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+zplug "zsh-users/zsh-completions"
 
-alias gvim="/Applications/MacVim.app/Contents/MacOS/Vim -g --remote-tab-silent"
-alias gvim_n="/Applications/MacVim.app/Contents/MacOS/Vim -g"
-alias agrep="ag"
-alias ssh='~/sh/ssh-change-bg'
+# plugins
+zplug "plugins/git", from:oh-my-zsh
+zplug "peco/peco", as:command, from:gh-r
+zplug "motemen/ghq", as:command, from:gh-r, rename-to:ghq
+git config --global ghq.root ${HOME}/workspace # ghqベースディレクトリ設定
+zplug "mollifier/anyframe"
 
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+# Then, source plugins and add commands to $PATH
+zplug load
+export PATH=${HOME}/.zplug/bin:$PATH
+
+# ------------------------------------------------------------------------
+# 環境別
+# ------------------------------------------------------------------------
+if [ -e "${HOME}/.zshrc_env" ]; then
+  source ${HOME}/.zshrc_env
+fi
+
+# ------------------------------------------------------------------------
+# 便利機能
+# ------------------------------------------------------------------------
 # ghq + peco
 function peco-src () {
   local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
@@ -101,9 +73,6 @@ function peco-src () {
 zle -N peco-src
 bindkey '^]' peco-src
 
-# ------------------------------------------------------------------------
-# ディレクトリ移動
-# ------------------------------------------------------------------------
 # cd + peco
 function peco-cd () {
   local selected_dir=$(find . -maxdepth 3 -type d | peco --query "$LBUFFER")
