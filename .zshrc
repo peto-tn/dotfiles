@@ -1,3 +1,6 @@
+# 計測用
+# zmodload zsh/zprof && zprof
+
 # User configuration
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 export PATH=$HOME/sh:$PATH
@@ -36,9 +39,12 @@ zplug "zsh-users/zsh-completions"
 # plugins
 zplug "plugins/git", from:oh-my-zsh
 zplug "peco/peco", as:command, from:gh-r
+zplug 'BurntSushi/ripgrep', as:command, from:gh-r, rename-to:rg
 zplug "motemen/ghq", as:command, from:gh-r, rename-to:ghq
 git config --global ghq.root ${HOME}/workspace # ghqベースディレクトリ設定
-zplug "mollifier/anyframe"
+zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
+zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
+zplug "lib/key-bindings", from:oh-my-zsh
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
@@ -49,7 +55,7 @@ if ! zplug check --verbose; then
 fi
 
 # Then, source plugins and add commands to $PATH
-zplug load
+zplug load #--verbose
 export PATH=${HOME}/.zplug/bin:$PATH
 
 # ------------------------------------------------------------------------
@@ -62,26 +68,60 @@ fi
 # ------------------------------------------------------------------------
 # 便利機能
 # ------------------------------------------------------------------------
+#--- ghq連携
 # ghq + peco
 function peco-src () {
-  local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
+  local selected_dir=$(ghq list | peco --query "$LBUFFER")
   if [ -n "$selected_dir" ]; then
-    BUFFER="cd ${selected_dir}"
+    BUFFER="cd $(ghq root)/${selected_dir}"
     zle accept-line
+    zle clear-screen
   fi
-  zle clear-screen
 }
 zle -N peco-src
+
+# ghq + fzf
+function fzf-src () {
+  local selected_dir=$(ghq list | fzf --ansi)
+  if [ -n "$selected_dir" ]; then
+    BUFFER="cd $(ghq root)/${selected_dir}"
+    zle accept-line
+    zle clear-screen
+  fi
+}
+zle -N fzf-src
+
 bindkey '^]' peco-src
 
+#--- cd連携
 # cd + peco
 function peco-cd () {
-  local selected_dir=$(find . -maxdepth 3 -type d | peco --query "$LBUFFER")
+  local selected_dir=$(find . -maxdepth 5 -type d | peco --query "$LBUFFER")
   if [ -n "$selected_dir" ]; then
     BUFFER="cd ${selected_dir}"
     zle accept-line
+    zle clear-screen
   fi
-  zle clear-screen
 }
 zle -N peco-cd
-bindkey 'pcd' peco-cd
+
+bindkey '^[' peco-cd
+
+#--- history連携
+# history + peco
+peco-select-history() {
+    BUFFER=$(history 1 | sort -k1,1nr | perl -ne 'BEGIN { my @lines = (); } s/^\s*\d+\s*//; $in=$_; if (!(grep {$in eq $_} @lines)) { push(@lines, $in); print $in; }' | peco --query "$LBUFFER")
+    CURSOR=${#BUFFER}
+
+    zle accept-line
+    zle clear-screen
+}
+
+zle -N peco-select-history
+
+bindkey '^r' peco-select-history
+
+# 計測用
+# if (which zprof > /dev/null) ;then
+#   zprof | less
+# fi
