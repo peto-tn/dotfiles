@@ -1,9 +1,25 @@
+# ------------------------------------------------------------------------
 # 計測用
-# zmodload zsh/zprof && zprof
+# ------------------------------------------------------------------------
+ZSH_SPEED_PROF=false
+if $ZSH_SPEED_PROF; then
+    zmodload zsh/zprof && zprof
+fi
 
+# ------------------------------------------------------------------------
+# PATH初期化
+# ------------------------------------------------------------------------
 # User configuration
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 export PATH=$HOME/sh:$PATH
+
+# ------------------------------------------------------------------------
+# anyenv
+# ------------------------------------------------------------------------
+if [ -d $HOME/.anyenv ] ; then
+    export PATH="$HOME/.anyenv/bin:$PATH"
+    eval "$(anyenv init -)"
+fi
 
 # ------------------------------------------------------------------------
 # zplug
@@ -121,7 +137,11 @@ zle -N peco-select-history
 
 bindkey '^r' peco-select-history
 
+# ------------------------------------------------------------------------
 # 計測用
-# if (which zprof > /dev/null) ;then
-#   zprof | less
-# fi
+# ------------------------------------------------------------------------
+if $ZSH_SPEED_PROF; then
+    if (which zprof > /dev/null) ;then
+      zprof | less
+    fi
+fi
