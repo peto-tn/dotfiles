@@ -60,8 +60,18 @@ function! s:LoadBundles()
   NeoBundle 'tacahiroy/ctrlp-funky'
 
   NeoBundle 'plasticboy/vim-markdown'
-  NeoBundle 'kannokanno/previm'
+"  NeoBundle 'kannokanno/previm', 'feature/add-plantuml-plugin'
+  NeoBundle 'kazuph/previm', 'feature/add-plantuml-plugin'
   NeoBundle 'tyru/open-browser.vim'
+
+  " lint
+  NeoBundle 'neomake/neomake'
+
+  " TypeScript
+  NeoBundle 'leafgarland/typescript-vim'
+
+  " Golang
+  NeoBundle 'fatih/vim-go'
 endfunction
 
 " NeoBundle がインストールされているなら LoadBundles() を呼び出す
@@ -239,7 +249,21 @@ augroup fileTypeIndent
     autocmd BufNewFile,BufRead *.rb setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd BufNewFile,BufRead *.proto setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd BufNewFile,BufRead *.cs setlocal noexpandtab tabstop=4 softtabstop=4 shiftwidth=4
+    autocmd BufNewFile,BufRead *.go setlocal tabstop=2 softtabstop=2 shiftwidth=2
 augroup END
+
+" golang
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_types = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+let g:go_fmt_command = "goimports"
+let g:go_file_type = "quickfix"
+let g:go_def_mode = "guru"
+
+let g:neomake_go_enabled_makers = ['golint', 'govet']
 
 if has("gui_running")
   set lines=100 columns=400
@@ -307,3 +331,8 @@ function! MyTabMove(c)
              \ target
   execute ':tabmove ' . target
 endfunction
+
+" 折り畳みをしない
+set foldmethod=syntax
+let perl_fold=1
+set foldlevel=100
