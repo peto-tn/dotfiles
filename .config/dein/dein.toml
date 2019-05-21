@@ -1,0 +1,103 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]] # hybrid
+repo = 'w0ng/vim-hybrid'
+
+[[plugins]] # ステータスライン
+repo = 'itchyny/lightline.vim'
+hook_add = '''
+    let g:lightline = {'colorscheme': 'wombat'}
+'''
+
+[[plugins]] # Toml
+repo  = 'cespare/vim-toml'
+
+[[plugins]] # Golang
+repo = 'fatih/vim-go'
+
+[[plugins]] # Japanese doc
+repo = 'vim-jp/vimdoc-ja'
+hook_add = 'set helplang=ja,en'
+
+[[plugins]]
+repo = 'scrooloose/nerdtree'
+hook_add = '''
+    noremap <C-K> :NERDTree<CR>
+    noremap <C-J> :NERDTreeFind<CR>
+'''
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'h1mesuke/vim-alignta'
+
+[[plugins]]
+repo = 'nixprime/cpsm'
+
+[[plugins]]
+repo = 'tacahiroy/ctrlp-funky'
+
+[[plugins]]
+repo = 'junegunn/fzf'
+build = './install --bin'
+merged = '0'
+
+[[plugins]]
+repo = 'junegunn/fzf.vim'
+depends = 'fzf'
+hook_add = '''
+    let $FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+    nnoremap <C-P> :Files<CR>
+    nnoremap <C-'> :GFiles?<CR>
+'''
+
+#[[plugins]]
+#repo='prabirshrestha/async.vim'
+#
+#[[plugins]]
+#repo='prabirshrestha/vim-lsp'
+#hook_add='''
+#let $PATH="/usr/local/opt/llvm/bin:".$PATH
+#if executable('clangd')
+#    au User lsp_setup call lsp#register_server({
+#        \ 'name': 'clangd',
+#        \ 'cmd': {server_info->['clangd']},
+#        \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+#        \ })
+#endif
+#
+#let g:lsp_signs_enabled = 1         " enable signs
+#let g:lsp_diagnostics_echo_cursor = 1 " enable echo under cursor when in normal mode
+#
+#let g:lsp_signs_error = {'text': '✗'}
+#let g:lsp_signs_warning = {'text': '‼'}
+#'''
+#
+#[[plugins]]
+#repo='prabirshrestha/asyncomplete.vim'
+#
+#[[plugins]]
+#repo='prabirshrestha/asyncomplete-lsp.vim'
+#
+#[[plugins]]
+#repo='prabirshrestha/asyncomplete-neosnippet.vim'
+#hook_add='''
+#call asyncomplete#register_source(asyncomplete#sources#neosnippet#get_source_options({
+#    \ 'name': 'neosnippet',
+#    \ 'whitelist': ['*'],
+#    \ 'completor': function('asyncomplete#sources#neosnippet#completor'),
+#    \ }))
+#imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+#smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+#xmap <C-k>     <Plug>(neosnippet_expand_target)
+#'''
+
+[[plugins]]
+repo = 'autozimu/LanguageClient-neovim'
+rev = 'next'
+build = 'bash install.sh'
+hook_add = '''
+source ~/.config/nvim/plugins/LanguageClient-neovim.rc.vim
+'''
