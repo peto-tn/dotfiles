@@ -1,3 +1,5 @@
+set shell=bash
+
 " reset augroup
 augroup MyAutoCmd
     autocmd!
@@ -102,6 +104,8 @@ set wrap
 set number
 " unファイルをオフ
 set noundofile
+" 小文字との判別をしない
+set ignorecase
 
 " 構文毎に文字色を変化させる
 syntax on
@@ -145,10 +149,10 @@ filetype on
 " 一部ファイルタイプでインデント幅を変更する
 augroup fileTypeIndent
     autocmd!
+    autocmd BufNewFile,BufRead *.vue setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd BufNewFile,BufRead *.json setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd BufNewFile,BufRead *.rb setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd BufNewFile,BufRead *.proto setlocal tabstop=2 softtabstop=2 shiftwidth=2
-    autocmd BufNewFile,BufRead *.cs setlocal noexpandtab tabstop=4 softtabstop=4 shiftwidth=4
 augroup END
 
 " ripgrep
