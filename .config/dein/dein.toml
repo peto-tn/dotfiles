@@ -13,6 +13,9 @@ hook_add = '''
 [[plugins]] # Toml
 repo  = 'cespare/vim-toml'
 
+[[plugins]] # typescript-vim
+repo  = 'leafgarland/typescript-vim'
+
 [[plugins]] # Golang
 repo = 'fatih/vim-go'
 hook_add = '''
@@ -46,9 +49,6 @@ repo = 'tpope/vim-fugitive'
 repo = 'h1mesuke/vim-alignta'
 
 [[plugins]]
-repo = 'nixprime/cpsm'
-
-[[plugins]]
 repo = 'tacahiroy/ctrlp-funky'
 
 [[plugins]]
@@ -62,7 +62,13 @@ depends = 'fzf'
 hook_add = '''
     let $FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
     nnoremap <C-P> :Files<CR>
-    nnoremap <C-'> :GFiles?<CR>
+    nnoremap <C-"> :GFiles?<CR>
+    nnoremap <C-'> :FzfRg<CR>
+
+    command! -bang -nargs=* FzfRg
+      \ call fzf#vim#grep(
+      \   'rg --line-number --no-heading '.shellescape(<q-args>), 0,
+      \   fzf#vim#with_preview({'options': '--exact --reverse'}, 'right:50%:wrap'))
 '''
 
 [[plugins]]
