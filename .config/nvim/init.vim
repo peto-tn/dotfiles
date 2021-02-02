@@ -153,6 +153,11 @@ augroup fileTypeIndent
     autocmd BufNewFile,BufRead *.json setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd BufNewFile,BufRead *.rb setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd BufNewFile,BufRead *.proto setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.js setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.jsx setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.ts setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.tsx setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.css setlocal tabstop=2 softtabstop=2 shiftwidth=2
 augroup END
 
 " ripgrep
@@ -162,6 +167,8 @@ set runtimepath+=~/.vim/bundle/vim-ripgrep.vim/
 
 " markdown
 au BufRead,BufNewFile *.md set filetype=markdown
+au BufRead,BufNewFile *.ts set filetype typescript
+au BufRead,BufNewFile *.tsx,*.jsx set filetype=typescript.tsx
 
 " tab
 " 現在のタブを右へ移動
