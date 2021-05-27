@@ -56,7 +56,7 @@ zplug "zsh-users/zsh-completions"
 zplug "plugins/git", from:oh-my-zsh
 zplug "peco/peco", as:command, from:gh-r
 zplug 'BurntSushi/ripgrep', as:command, from:gh-r, rename-to:rg
-zplug "motemen/ghq", as:command, from:gh-r, rename-to:ghq
+zplug "x-motemen/ghq", as:command, from:gh-r, rename-to:ghq
 git config --global ghq.root ${HOME}/workspace # ghqベースディレクトリ設定
 zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
