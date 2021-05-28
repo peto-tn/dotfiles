@@ -5,8 +5,8 @@ augroup MyAutoCmd
     autocmd!
 augroup END
 
-let $PATH="/usr/local/opt/llvm/bin:~/.anyenv/envs/pyenv/shims:".$PATH
-let g:python3_host_prog = expand('~/.anyenv/envs/pyenv/shims/python3')
+" let $PATH="/usr/local/opt/llvm/bin:~/.anyenv/envs/pyenv/shims:".$PATH
+" let g:python3_host_prog = expand('~/.anyenv/envs/pyenv/shims/python3')
 
 let $CACHE  = empty($XDG_CACHE_HOME)  ? expand('$HOME/.cache')       : $XDG_CACHE_HOME
 let $CONFIG = empty($XDG_CONFIG_HOME) ? expand('$HOME/.config')      : $XDG_CONFIG_HOME
@@ -197,4 +197,3 @@ set foldlevel=100
 
 " カラーテーマ
 set background=dark
-colorscheme hybrid

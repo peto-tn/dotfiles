@@ -23,13 +23,13 @@ hook_source = '''
 source ~/.config/nvim/plugins/neosnippet.rc.vim
 '''
 
-[[plugins]]
-repo = 'Shougo/deoplete.nvim'
-depends = 'context_filetype.vim'
-on_event = 'InsertEnter'
-hook_source = '''
-source ~/.config/nvim/plugins/deoplete.rc.vim
-'''
+# [[plugins]]
+# repo = 'Shougo/deoplete.nvim'
+# depends = 'context_filetype.vim'
+# on_event = 'InsertEnter'
+# hook_source = '''
+# source ~/.config/nvim/plugins/deoplete.rc.vim
+# '''
 
 [[plugins]]
 repo = 'posva/vim-vue'
