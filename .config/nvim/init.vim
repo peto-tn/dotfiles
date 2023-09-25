@@ -197,3 +197,10 @@ set foldlevel=100
 
 " カラーテーマ
 set background=dark
+
+" lsp
+let g:lsp_settings_filetype_ruby = ['solargraph']
+nnoremap <C-]> :LspDefinition<CR>
+
+imap <C-q> <Plug>(copilot-next)
+imap <C-w> <Plug>(copilot-previous)

@@ -16,20 +16,23 @@ repo  = 'cespare/vim-toml'
 [[plugins]] # typescript-vim
 repo  = 'leafgarland/typescript-vim'
 
-[[plugins]] # Golang
-repo = 'fatih/vim-go'
-hook_add = '''
-    let g:go_highlight_functions = 1
-    let g:go_highlight_methods = 1
-    let g:go_highlight_fields = 1
-    let g:go_highlight_types = 1
-    let g:go_highlight_operators = 1
-    let g:go_highlight_build_constraints = 1
-    let g:go_fmt_command = "goimports"
-    let g:go_file_type = "quickfix"
-    let g:go_def_mode = "guru"
-    let g:neomake_go_enabled_makers = ['golint', 'govet']
-'''
+# [[plugins]] # Golang
+# repo = 'fatih/vim-go'
+# hook_add = '''
+#     let g:go_highlight_functions = 1
+#     let g:go_highlight_methods = 1
+#     let g:go_highlight_fields = 1
+#     let g:go_highlight_types = 1
+#     let g:go_highlight_operators = 1
+#     let g:go_highlight_build_constraints = 1
+#     let g:go_fmt_command = "goimports"
+#     let g:go_file_type = "quickfix"
+#     let g:go_def_mode = "guru"
+#     let g:neomake_go_enabled_makers = ['golint', 'govet']
+# '''
+
+[[plugins]]
+repo = 'mattn/vim-goimports'
 
 [[plugins]] # Japanese doc
 repo = 'vim-jp/vimdoc-ja'
@@ -71,9 +74,22 @@ hook_add = '''
       \   fzf#vim#with_preview({'options': '--exact --reverse'}, 'right:50%:wrap'))
 '''
 
+# lsp
 [[plugins]]
 repo = 'prabirshrestha/async.vim'
 
+[[plugins]]
+repo = 'prabirshrestha/vim-lsp'
+
+[[plugins]]
+repo = 'mattn/vim-lsp-settings'
+
+# Auto-complete
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete.vim'
+
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete-lsp.vim'
 
 
 
@@ -104,8 +120,8 @@ repo = 'prabirshrestha/async.vim'
 #source ~/.config/nvim/plugins/LanguageClient-neovim.rc.vim
 #'''
 
-[[plugins]]
-repo = 'tpope/vim-fugitive'
+# [[plugins]]
+# repo = 'tpope/vim-fugitive'
 
 [[plugins]]
 repo = 'tomtom/tcomment_vim'
@@ -113,10 +129,10 @@ repo = 'tomtom/tcomment_vim'
 [[plugins]] # GraphQL
 repo = 'jparise/vim-graphql'
 
-[[plugins]]
-repo = 'neoclide/coc.nvim'
-build = './install.sh nightly'
-merged = '0'
+# [[plugins]]
+# repo = 'neoclide/coc.nvim'
+# build = './install.sh nightly'
+# merged = '0'
 
 [[plugins]]
 repo = 'impactaky/deepl.nvim'
@@ -126,3 +142,15 @@ vmap ze :call deepl#replace_to_translated_text('', 'EN')<CR>gvgq
 nmap zj vip:call deepl#replace_to_translated_text('', 'JA')<CR>gvgq
 nmap ze vip:call deepl#replace_to_translated_text('', 'EN')<CR>gvgq
 '''
+
+[[plugins]]
+repo = 'google/vim-jsonnet'
+
+[[plugins]]
+repo = 'vim-denops/denops.vim'
+
+[[plugins]]
+repo = 'aklt/plantuml-syntax'
+
+[[plugins]]
+repo = 'weirongxu/plantuml-previewer'

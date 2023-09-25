@@ -2,9 +2,10 @@
 " NeoBundle がインストールされていない時、
 " もしくは、プラグインの初期化に失敗した時の処理
 function! s:WithoutBundles()
-  colorscheme desert
     " その他の処理
 endfunction
+
+colorscheme desert
 
 " NeoBundle よるプラグインのロードと各プラグインの初期化
 function! s:LoadBundles()
@@ -41,6 +42,7 @@ function! s:LoadBundles()
 
   " セレクタ
   NeoBundle 'ctrlpvim/ctrlp.vim'
+  NeoBundle "ivalkeen/vim-ctrlp-tjump"
 
   " 検索/置換
   NeoBundle 'tpope/vim-abolish'
@@ -72,6 +74,10 @@ function! s:LoadBundles()
 
   " Golang
   NeoBundle 'fatih/vim-go'
+
+  " Swift
+  NeoBundle 'apple-swift', {'type': 'nosync', 'base': '~/.vim/bundle/manual'}
+
 endfunction
 
 " NeoBundle がインストールされているなら LoadBundles() を呼び出す
@@ -296,7 +302,7 @@ elseif executable('Ag')
 endif
 
 " matcher に cpsm を使用
-let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
+" let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
 
 " function検索用バインド
 nnoremap <Leader>fu :CtrlPFunky<Cr>
