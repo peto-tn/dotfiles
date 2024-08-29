@@ -36,7 +36,6 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 # theme
 zplug "themes/eastwood", from:oh-my-zsh, as:theme
 zplug "lib/completion", from:oh-my-zsh
-zplug "lib/termsupport", from:oh-my-zsh
 zplug "lib/theme-and-appearance", from:oh-my-zsh
 
 # history
@@ -54,11 +53,11 @@ zplug "zsh-users/zsh-completions"
 
 # plugins
 zplug "plugins/git", from:oh-my-zsh
-zplug "peco/peco", as:command, from:gh-r
-zplug 'BurntSushi/ripgrep', as:command, from:gh-r, rename-to:rg
-zplug "x-motemen/ghq", as:command, from:gh-r, rename-to:ghq
+#zplug "peco/peco", as:command, from:gh-r, use:"*darwin*arm64*"
+#zplug 'BurntSushi/ripgrep', as:command, from:gh-r, rename-to:rg, use:"*darwin*arm64*"
+#zplug "x-motemen/ghq", as:command, from:gh-r, rename-to:ghq, use:"*darwin*{arm,64}*"
 git config --global ghq.root ${HOME}/workspace # ghqベースディレクトリ設定
-zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
+#zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
 zplug "lib/key-bindings", from:oh-my-zsh
 
@@ -145,3 +144,13 @@ if $ZSH_SPEED_PROF; then
       zprof | less
     fi
 fi
+
+function precmd() {
+  # カレントディレクトリを $HOME を ~ として表示
+  local wname=`pwd | sed -e "s|$HOME|~|"`
+  # カレントディレクトリ名
+  local tname=`pwd | sed -e 's|^.*/||'`
+
+  echo -ne "\033]2;$wname\007" # window title
+  echo -ne "\033]1;$tname\007" # tab title
+}
