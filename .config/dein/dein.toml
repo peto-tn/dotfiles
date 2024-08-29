@@ -16,20 +16,20 @@ repo  = 'cespare/vim-toml'
 [[plugins]] # typescript-vim
 repo  = 'leafgarland/typescript-vim'
 
-# [[plugins]] # Golang
-# repo = 'fatih/vim-go'
-# hook_add = '''
-#     let g:go_highlight_functions = 1
-#     let g:go_highlight_methods = 1
-#     let g:go_highlight_fields = 1
-#     let g:go_highlight_types = 1
-#     let g:go_highlight_operators = 1
-#     let g:go_highlight_build_constraints = 1
-#     let g:go_fmt_command = "goimports"
-#     let g:go_file_type = "quickfix"
-#     let g:go_def_mode = "guru"
-#     let g:neomake_go_enabled_makers = ['golint', 'govet']
-# '''
+[[plugins]] # Golang
+repo = 'fatih/vim-go'
+hook_add = '''
+    let g:go_highlight_functions = 1
+    let g:go_highlight_methods = 1
+    let g:go_highlight_fields = 1
+    let g:go_highlight_types = 1
+    let g:go_highlight_operators = 1
+    let g:go_highlight_build_constraints = 1
+    let g:go_fmt_command = "goimports"
+    let g:go_file_type = "quickfix"
+    let g:go_def_mode = "guru"
+    let g:neomake_go_enabled_makers = ['golint', 'govet']
+'''
 
 [[plugins]]
 repo = 'mattn/vim-goimports'
@@ -154,3 +154,19 @@ repo = 'aklt/plantuml-syntax'
 
 [[plugins]]
 repo = 'weirongxu/plantuml-previewer'
+
+[[plugins]]
+repo = 'hashivim/vim-terraform'
+on_ft = ['hcl', 'tf']
+
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter'
+
+[[plugins]]
+repo = 'neovim/nvim-lspconfig'
+
+[[plugins]]
+repo = 'ray-x/go.nvim'
+
+[[plugins]]
+repo = 'ray-x/guihua.lua'
