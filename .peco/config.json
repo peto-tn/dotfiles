@@ -4,6 +4,8 @@
         "C-j": "peco.SelectNext",
         "C-b": "peco.SelectPreviousPage",
         "C-f": "peco.SelectNextPage",
-        "C-c": "peco.Cancel"
-    }
+        "C-c": "peco.Cancel",
+        "C-t": "peco.ToggleSelectionAndSelectNext"
+    },
+    "StickySelection": true
 }
